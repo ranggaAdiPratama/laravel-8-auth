@@ -9,7 +9,8 @@ use Validator;
 use Hash;
 use Session;
 use App\Models\User;
-
+use Exception;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -19,11 +20,17 @@ class AuthController extends Controller
             //Login Success
             return redirect()->route('home');
         }
-        return view('login');
+        return view('auth.login');
     }
 
     public function login(Request $request)
     {
+        ini_set('memory_limit', '4095M');
+        
+        // $user = DB::table('users')->where('email', $request->email)->first();
+        
+        // dd($user);
+        try{
         $rules = [
             'email'                 => 'required|email',
             'password'              => 'required|string'
@@ -46,18 +53,21 @@ class AuthController extends Controller
             'email'     => $request->input('email'),
             'password'  => $request->input('password'),
         ];
-
+        
         Auth::attempt($data);
 
         if (Auth::check()) { // true sekalian session field di users nanti bisa dipanggil via Auth
             //Login Success
-            return redirect()->route('home');
+            return redirect()->to('/home');
 
         } else { // false
 
             //Login Fail
             Session::flash('error', 'Email atau password salah');
             return redirect()->route('login');
+        }
+        } catch(Exception $e) {
+            dd($e);
         }
 
     }

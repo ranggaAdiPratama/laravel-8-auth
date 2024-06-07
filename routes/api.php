@@ -2,7 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\RegulerController;
+use App\Http\Controllers\HomeController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,3 +18,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('/city',[RegulerController::class, 'getDistrictByCityId'])->name('city.id');
+Route::get('/district',[RegulerController::class, 'getVillageByDistrictId'])->name('district.id');
+Route::get('/district-bulk',[RegulerController::class, 'getVillageByDistrictIdBulk'])->name('district.id.bluk');
+Route::get('/counter',[RegulerController::class, 'countCustomer'])->name('counter');
+Route::get('/special-pickup-fee',[RegulerController::class, 'specialPickupFee'])->name('specialPickupFee');
+Route::get('/special-delivery-fee',[RegulerController::class, 'specialDeliveryFee'])->name('specialDeliveryFee');
